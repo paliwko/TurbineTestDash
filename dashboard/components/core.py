@@ -7,7 +7,7 @@ header = dbc.Navbar(
         [
             dbc.Row(
                 [
-                    dbc.Col(html.Img(src=test_logo, height="100")),
+                    dbc.Col(html.Img(src=test_logo, height="100"), align="left"),
                     dbc.Col(
                         dbc.NavbarBrand("Turbine Test Data Reviewer", className="ms-2")
                     ),

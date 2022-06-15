@@ -1,3 +1,5 @@
+from typing import List, Tuple
+
 import dash_bootstrap_components as dbc
 import plotly.express as px
 import plotly.graph_objects as go
@@ -21,21 +23,45 @@ app.layout = dbc.Container(
         html.Br(),
         dbc.Row(
             [
-                dbc.Col(html.H5("Select Amplitude [micro in/in] range:")),
-                dbc.Col(amp_range()),
+                dbc.Col(html.H6("Select Amplitude [micro in/in] range:"), width=2),
+                dbc.Col(amp_range(), width=5),
             ]
         ),
         dbc.Row(
             [
-                dbc.Col(html.H5("Select Sequence Y:")),
-                dbc.Col(sequence_y_dropdown()),
+                dbc.Col(html.H6("Select Sequence Y:"), width=2),
+                dbc.Col(sequence_y_dropdown(), width=5),
             ]
         ),
-        dbc.Row(dbc.Col(scatter_top())),
-        dbc.Row([dbc.Col(scatter_1()), dbc.Col(scatter_2())]),
+        dbc.Row(dbc.Col(id="scatter-top-col", children=scatter_top())),
+        dbc.Row(
+            [
+                dbc.Col(id="scatter-1-col", children=scatter_1()),
+                dbc.Col(id="scatter-2-col", children=scatter_2()),
+            ]
+        ),
     ],
     fluid=True,
 )
+
+
+@app.callback(
+    Output("scatter-top-col", "children"),
+    Output("scatter-1-col", "children"),
+    Output("scatter-2-col", "children"),
+    Input("amp-slider", "value"),
+    # Input("sequence_y_dropdown", "value"),
+    prevent_initial_call=True,
+)
+def adjust_graphs(
+    amp_range_f: List[float],
+) -> Tuple[dcc.Graph, dcc.Graph, dcc.Graph]:
+    return (
+        scatter_top(amp_range_f),
+        scatter_1(amp_range_f),
+        scatter_2(amp_range_f),
+    )
+
 
 if __name__ == "__main__":
     app.run_server(
