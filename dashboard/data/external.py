@@ -54,10 +54,7 @@ from dash import Dash, Input, Output, dcc, html
 # fig_scatter.show()
 
 
-df1 = pd.read_csv(
-    r"E:/Pauli/Podyplom/IWD/turbine_test_dash/dashboard/data/data_raw.csv",
-    encoding="latin-1",
-)
+df1 = pd.read_csv("data_raw.csv", encoding="latin-1",)
 df1.columns = df1.columns.str.replace(" ", "")
 set_df = df1
 set_df.sort_values("dda50Amplitude", ascending=True, inplace=True)
@@ -66,7 +63,7 @@ set_df.sort_values("dda50Amplitude", ascending=True, inplace=True)
 
 
 def set_df_f() -> pd.DataFrame:
-    return set_df
+    return set_df.copy(deep=True) # <- to avoid 
 
 
 # print(set_df.dtypes)

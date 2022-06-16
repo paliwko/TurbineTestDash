@@ -22,7 +22,7 @@ def sequence_y_dropdown() -> dcc.Dropdown:
     df = set_df_f()
     return dcc.Dropdown(
         df.Testpointsequencenumber_y.unique(),
-        id="sequence_y_dropdown",
+        id="sequence-y-dropdown",
         placeholder="Select a Sequence Y",
         multi=True,
         searchable=False,

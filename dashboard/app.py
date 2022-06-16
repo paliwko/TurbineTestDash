@@ -50,16 +50,17 @@ app.layout = dbc.Container(
     Output("scatter-1-col", "children"),
     Output("scatter-2-col", "children"),
     Input("amp-slider", "value"),
-    # Input("sequence_y_dropdown", "value"),
+    Input("sequence-y-dropdown", "value"),
     prevent_initial_call=True,
 )
 def adjust_graphs(
-    amp_range_f: List[float],
+    amp_range_f: List[float], seq_y_vals: List[int]
 ) -> Tuple[dcc.Graph, dcc.Graph, dcc.Graph]:
+    print(seq_y_vals)
     return (
-        scatter_top(amp_range_f),
-        scatter_1(amp_range_f),
-        scatter_2(amp_range_f),
+        scatter_top(amp_range_f, seq_y_vals),
+        scatter_1(amp_range_f, seq_y_vals),
+        scatter_2(amp_range_f, seq_y_vals),
     )
 
 

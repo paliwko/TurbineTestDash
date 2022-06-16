@@ -6,13 +6,14 @@ from data.external import set_df_f
 from plotly.subplots import make_subplots
 
 
-def scatter_top(amp_range_f: List[float] = None):
+def scatter_top(amp_range_f: List[float] = None, seq_y_vals: List[int] = None):
     _df = set_df_f()
     if amp_range_f is not None:
         _df = _df.loc[_df.dda50Amplitude.between(*amp_range_f)]
-    return dcc.Graph(
-        id="scatter-top",
-        figure=px.scatter(
+    if seq_y_vals is not None:
+        _df = _df.loc[_df.Testpointsequencenumber_y.isin(seq_y_vals)]
+
+    scatter_fig = px.scatter(
             _df,
             x="r12_load_MW",
             y="dda50FrequencyHz",
@@ -25,17 +26,22 @@ def scatter_top(amp_range_f: List[float] = None):
                 "dda50Amplitude",
             ],
             height=700,
-            size="dda50Amplitude",  # jak narzucic staly wiekszy rozmiar kropki??
             color="dda50Amplitude",
             color_continuous_scale="Bluered",  # set color equal to a variable
-        ),
+        )
+    scatter_fig.update_traces(marker={'size': 15})
+    return dcc.Graph(
+        id="scatter-top",
+        figure=scatter_fig,
     )
 
 
-def scatter_1(amp_range_f: List[float] = None):
+def scatter_1(amp_range_f: List[float] = None, seq_y_vals: List[int] = None):
     _df = set_df_f()
     if amp_range_f is not None:
         _df = _df.loc[_df.dda50Amplitude.between(*amp_range_f)]
+    if seq_y_vals is not None:
+        _df = _df.loc[_df.Testpointsequencenumber_y.isin(seq_y_vals)]
     return dcc.Graph(
         id="scatter-1",
         figure=px.scatter(
@@ -56,10 +62,12 @@ def scatter_1(amp_range_f: List[float] = None):
     )
 
 
-def scatter_2(amp_range_f: List[float] = None):
+def scatter_2(amp_range_f: List[float] = None, seq_y_vals: List[int] = None):
     _df = set_df_f()
     if amp_range_f is not None:
         _df = _df.loc[_df.dda50Amplitude.between(*amp_range_f)]
+    if seq_y_vals is not None:
+        _df = _df.loc[_df.Testpointsequencenumber_y.isin(seq_y_vals)]
     return dcc.Graph(
         id="scatter-2",
         figure=px.scatter(
