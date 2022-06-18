@@ -1,4 +1,5 @@
 import glob
+from typing import List
 
 import pandas as pd
 import plotly.express as px
@@ -70,3 +71,14 @@ def set_df_f() -> pd.DataFrame:
 
 
 # print(set_df.dtypes)
+
+
+def filter_data(
+    df: pd.DataFrame, amp_range_f: List[float] = None, seq_y_vals: List[int] = None
+) -> pd.DataFrame:
+    if amp_range_f is not None:
+        df = df.loc[df.dda50Amplitude.between(*amp_range_f)]
+
+    if seq_y_vals is not None:
+        df = df.loc[df.Testpointsequencenumber_y.isin(seq_y_vals)]
+    return df
