@@ -7,10 +7,11 @@ from data.external import set_df_f
 def amp_range() -> dcc.RangeSlider:
     df = set_df_f()
     min_, max_ = df.dda50Amplitude.min(), df.dda50Amplitude.max()
+    max_range = df.dda50Amplitude.max() + 1
     # mean_, std_ = df.dda50Amplitude.mean(), df.dda50Amplitude.std()
     return dcc.RangeSlider(
         min=0,
-        max=max_,
+        max=max_ + 1,
         value=[min_, max_],
         id="amp-slider",
         allowCross=False,
