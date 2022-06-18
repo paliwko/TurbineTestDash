@@ -52,6 +52,7 @@ app.layout = dbc.Container(
                     filter_action="native",
                     sort_action="native",
                     sort_mode="multi",
+                    id="text-data",
                 )
             )
         ),
@@ -78,6 +79,18 @@ def adjust_graphs(
         # scatter_2(amp_range_f, seq_y_vals),
     )
 
+
+# @app.callback(
+#    Output("text-data", "data"),
+#    Input("sequence-y-dropdown", "value"),
+#    prevent_initial_call=True,
+
+# def adjust_table(
+#    amp_range_f: List[float], seq_y_vals: List[int]
+# ) -> [str]):
+# df=set_df_f
+# df=.... #sprawdz wyniesione filtrowanie,zle
+# return df.to_dict("records")
 
 if __name__ == "__main__":
     app.run_server(
