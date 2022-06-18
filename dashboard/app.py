@@ -10,7 +10,7 @@ from plotly.subplots import make_subplots
 
 from components.core import header
 from components.filtering import amp_range, sequence_y_dropdown
-from data.external import set_df_f
+from data.external import filter_data, set_df_f
 from graphs.templates import scatter_1, scatter_top
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.LUX])
@@ -26,12 +26,26 @@ app.layout = dbc.Container(
             [
                 dbc.Col(html.H5("Select Amplitude [micro in/in] range:"), width=2),
                 dbc.Col(amp_range(), width=5),
+                dbc.Col(width=3),
             ]
         ),
         dbc.Row(
             [
                 dbc.Col(html.H5("Select Sequence Y:"), width=2),
                 dbc.Col(sequence_y_dropdown(), width=5),
+                dbc.Col(width=2),
+                dbc.Col(
+                    dbc.Button(
+                        "Reset selection",
+                        color="warning",
+                        className="me-1",
+                        href="/",
+                        external_link=True,
+                        id="reset-selection",
+                    ),
+                    width=3,
+                    align="right",
+                ),
             ]
         ),
         dbc.Row(dbc.Col(id="scatter-top-col", children=scatter_top())),
@@ -80,21 +94,36 @@ def adjust_graphs(
     )
 
 
-# @app.callback(
-#    Output("text-data", "data"),
-#    Input("sequence-y-dropdown", "value"),
-#    prevent_initial_call=True,
+@app.callback(
+    Output("text-data", "data"),
+    Input("sequence-y-dropdown", "value"),
+    prevent_initial_call=True,
+)
+def adjust_table(amp_range_f: List[float], seq_y_vals: List[int]) -> str:
+    df = set_df_f()
+    df = filter_data(df, amp_range_f, seq_y_vals)
+    return df.to_dict("records")
 
-# def adjust_table(
-#    amp_range_f: List[float], seq_y_vals: List[int]
-# ) -> [str]):
-# df=set_df_f
-# df=.... #sprawdz wyniesione filtrowanie,zle
-# return df.to_dict("records")
+
+# @app.callback(
+#    Output("sequence-y-dropdown", "value"),
+#    Input("sequence-y-dropdown", "options"),
+#    prevent_initial_call=True,
+# )
+# def callback(value):
+#    return ""
+
+
+# @app.callback(
+#    Output("sequence-y-dropdown", "value"), Input("reset-selection", "n_clicks")
+# )
+# def dropdown_callback(n_clicks):
+#    return n_clicks["none"]
+
 
 if __name__ == "__main__":
     app.run_server(
-        port=8066,
+        port=8067,
         debug=True,
         dev_tools_hot_reload=True,
         dev_tools_hot_reload_max_retry=5,
